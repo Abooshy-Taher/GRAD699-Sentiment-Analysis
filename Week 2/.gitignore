@@ -1,0 +1,7 @@
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+.DS_Store
+data/*.sqlite
+# If your CSV is large and should not be checked in, uncomment:
+# data/*.csv
