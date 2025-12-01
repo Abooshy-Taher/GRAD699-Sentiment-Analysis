@@ -161,9 +161,9 @@ This project is for academic purposes.
 
 ## 👤 Author
 
-[Your Name]
+Abdullah Ahmad Adel Al-Taher
 - Course: GRAD699
-- Institution: [Your Institution]
+- Institution: Harrisburg University of Science and Technology
 
 ## 🙏 Acknowledgments
 
