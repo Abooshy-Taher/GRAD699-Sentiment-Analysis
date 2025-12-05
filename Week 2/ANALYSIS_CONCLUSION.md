@@ -70,7 +70,7 @@ Both sentiment analysis methods show consistent patterns:
 
 ### 3.2 Cross-Validation Results
 
-Using 5-fold stratified cross-validation on a sample of 50,000 reviews:
+Using 5-fold stratified cross-validation on a sample of 50,000 reviews (for computational efficiency):
 
 | Model | Mean CV ROC-AUC | Std Deviation |
 |-------|----------------|---------------|
@@ -79,6 +79,8 @@ Using 5-fold stratified cross-validation on a sample of 50,000 reviews:
 | **Logistic Regression** | 0.999987 | 9.44e-06 |
 
 **Finding**: All models show excellent generalization with minimal variance across folds, indicating robust performance.
+
+**Note**: The cross-validation used a 50,000-sample subset for efficiency. The final model evaluation (confusion matrix and detailed metrics) used the full test set of 140,264 samples (20% of the complete dataset).
 
 ### 3.3 Feature Importance Analysis
 
@@ -134,11 +136,14 @@ All feature combinations achieved perfect ROC-AUC (1.000000):
 
 ### 5.1 Best Model: Random Forest
 
+**Test Set**: Full test set of 140,264 samples (20% of complete dataset, not the cross-validation subset)
+
 **Confusion Matrix Results**:
 - True Positives: 19,935
 - True Negatives: 120,329
 - False Positives: 0
 - False Negatives: 0
+- **Total Test Samples**: 140,264
 
 **Metrics**:
 - Precision: 1.0000
