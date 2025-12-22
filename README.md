@@ -88,7 +88,6 @@ The project includes a comprehensive testing framework with 10 different tests:
   - Logistic Regression
   - Random Forest
   - Gradient Boosting
-  - Support Vector Machine (SVM)
 - Compares ROC-AUC, accuracy, and training time
 
 ### Test 4: Cross-Validation Testing
