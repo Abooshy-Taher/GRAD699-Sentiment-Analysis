@@ -1,29 +1,42 @@
-# Sentiment Analysis Project
+# Sentiment Analysis Project: Time-of-Day Effects on Review Sentiment
 
-A comprehensive sentiment analysis project analyzing Amazon product reviews using multiple machine learning techniques and statistical methods.
+A comprehensive sentiment analysis project analyzing Amazon product reviews to study how time-of-day affects review sentiment. This project implements a rigorous machine learning pipeline with strict data leakage prevention protocols.
 
 ## 📋 Project Overview
 
-This project performs sentiment analysis on Amazon product reviews, comparing different sentiment analysis methods (VADER and TextBlob) and evaluating multiple machine learning models to predict review sentiment.
+This project performs sentiment analysis on Amazon product reviews with a focus on:
+- **Temporal patterns**: How time of day affects whether customers leave positive, negative, or neutral reviews
+- **Data leakage prevention**: Strict chronological splitting and proper feature engineering
+- **Multiple model comparison**: TF-IDF, time features, embeddings, and BERT models
+- **Ternary classification**: Negative (1-2 stars), Neutral (3 stars), Positive (4-5 stars)
 
 ## 🎯 Objectives
 
-- Compare sentiment analysis methods (VADER vs TextBlob)
-- Evaluate multiple ML models (Logistic Regression, Random Forest, Gradient Boosting, SVM)
-- Analyze sentiment patterns across ratings and time periods
-- Perform statistical tests to identify significant relationships
-- Feature engineering and importance analysis
+- Analyze sentiment patterns across different hours of the day
+- Build and compare multiple ML models (Text-only, Time-only, Combined, Word2Vec, BERT)
+- Predict review sentiment using **rating-based ground truth labels** (not text-derived)
+- Prevent data leakage through chronological splitting and proper feature engineering
+- Evaluate models using time-aware cross-validation
+- Identify optimal time windows for feedback requests
 
 ## 📁 Project Structure
 
 ```
 Sentiment Analysis/
-├── Amazon_Data.csv          # Dataset (Amazon product reviews)
-├── Week 1/                   # Initial experiments and feasibility study
+├── Amazon_Data.csv                      # Dataset (Amazon product reviews)
+├── Week 1/                              # Initial experiments and feasibility study
 │   ├── Feasibility Study Summary.docx
 │   └── Sentiment Analysis Experiment.R
-├── Week 2/                   # Comprehensive testing framework
-│   └── VSCodeExperiment.ipynb
+├── Week 2/                              # Comprehensive testing framework
+│   ├── ANALYSIS_CONCLUSION.md
+│   ├── VSCodeExperiment.ipynb
+│   └── VSCodeExperiment_Organized.ipynb
+├── Week 3/                              # Organized code with comments
+│   └── Organized Code w Comments.ipynb
+├── Week 4/                              # ⭐ Main pipeline (production-ready)
+│   ├── Sentiment_Analysis_Pipeline.ipynb    # Complete ML pipeline with leakage fixes
+│   └── LEAKAGE_FIXES_EXPLANATION.md         # Detailed explanation of fixes
+├── LICENSE
 └── README.md
 ```
 
@@ -33,7 +46,7 @@ Sentiment Analysis/
 
 - Python 3.7+
 - Jupyter Notebook
-- Required Python packages (see Installation)
+- Required Python packages (see Installation below)
 
 ### Installation
 
@@ -45,7 +58,7 @@ cd "Sentiment Analysis"
 
 2. Install required packages:
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn scipy vaderSentiment textblob
+pip install pandas numpy matplotlib seaborn scikit-learn scipy gensim transformers torch
 ```
 
 Or install from requirements (if available):
@@ -53,102 +66,173 @@ Or install from requirements (if available):
 pip install -r requirements.txt
 ```
 
+**Note**: For BERT models, you may also need:
+- PyTorch (installed via transformers dependency)
+- Hugging Face transformers library
+
 ## 📊 Dataset
 
 The dataset contains Amazon product reviews with the following columns:
-- `rating`: Star rating (1-5)
-- `title`: Review title
-- `text`: Review text
-- `timestamp`: Review timestamp
+- `rating`: Star rating (1-5) - **used as ground truth for sentiment labels**
+- `text`: Review text (main feature)
+- `timestamp`: Review timestamp (used for chronological splitting and time features)
 - Additional metadata fields
 
-**Note**: 
+**Important Notes**: 
 - The dataset file (`Amazon_Data.csv`) is not included in this repository due to its large size (>200MB)
 - You will need to provide your own dataset or download it separately
 - Ensure the CSV file is placed in the root directory with the name `Amazon_Data.csv`
 - The dataset should have at minimum: `text`, `rating`, and `timestamp` columns
 
-## 🔬 Testing Framework
+## 🔬 Main Pipeline: Week 4 Notebook
 
-The project includes a comprehensive testing framework with 10 different tests:
+The **Week 4 notebook** (`Sentiment_Analysis_Pipeline.ipynb`) contains the production-ready pipeline with strict data leakage prevention:
 
-### Test 1: Sentiment Analysis Methods Comparison
-- Compares VADER compound scores vs TextBlob polarity
-- Analyzes correlation between methods
+### Pipeline Structure (Sections A-M):
 
-### Test 2: Feature Engineering
-- Creates additional features:
-  - Word count, average word length
-  - Exclamation/question mark counts
-  - Capital letter ratio
-  - Day of week encoding
+1. **A. Imports & Config**: Libraries and configuration
+2. **B. Load Data**: Load and inspect dataset
+3. **C. Data Cleaning / Preprocessing**: Basic cleaning (before splitting)
+4. **D. Define Target**: Rating-based ternary labels (Negative/Neutral/Positive)
+5. **E. Chronological Split**: Time-based train/val/test split (70/15/15)
+6. **F. Feature Engineering**: Fit transformers on train only
+7. **G. EDA**: Exploratory analysis on train set only
+8. **H. Baselines**: Majority class + time-based heuristic
+9. **I. Models**: Multiple model implementations
+10. **J. Validation & Metrics**: Time-aware cross-validation
+11. **K. Final Test Evaluation**: One-time test set evaluation
+12. **L. Error Analysis**: Misclassification analysis
+13. **M. Conclusions**: Summary and next steps
 
-### Test 3: Multiple ML Models Comparison
-- Tests 4 different algorithms:
-  - Logistic Regression
-  - Random Forest
-  - Gradient Boosting
-- Compares ROC-AUC, accuracy, and training time
+### Models Implemented:
 
-### Test 4: Cross-Validation Testing
-- 5-fold stratified cross-validation
-- Robust model evaluation
+1. **Baseline 1**: Majority class classifier
+2. **Baseline 2**: Time-based heuristic (most common sentiment per hour)
+3. **Model 1**: TF-IDF + Logistic Regression (text-only)
+4. **Model 2**: Time features only (Logistic Regression on hour/day/weekend)
+5. **Model 3**: Text+Time Combined (TF-IDF + time features)
+6. **Model 4**: Word2Vec embeddings (averaged) + Logistic Regression
+7. **Model 5**: BERT (DistilBERT) for sentiment classification
 
-### Test 5: Feature Importance Analysis
-- Identifies most important features using Random Forest
+### Key Features:
 
-### Test 6: Statistical Tests
-- ANOVA test for sentiment across ratings
-- Correlation tests
-- T-tests for time-of-day differences
+- ✅ **Ternary Classification**: Negative (1-2 stars), Neutral (3 stars), Positive (4-5 stars)
+- ✅ **Rating-Based Labels**: Uses star ratings as ground truth (not text-derived sentiment)
+- ✅ **Chronological Splitting**: 70% train (oldest), 15% validation, 15% test (most recent)
+- ✅ **No Data Leakage**: All transforms fit on training data only
+- ✅ **Time-Aware Validation**: Uses TimeSeriesSplit for cross-validation
+- ✅ **Comprehensive Metrics**: F1 (macro), ROC-AUC, Precision, Recall for multi-class
+- ✅ **Error Analysis**: Confusion matrix, misclassification examples, performance by hour
 
-### Test 7: Performance Visualizations
-- ROC curves for all models
-- Model comparison charts
+## 🛡️ Data Leakage Prevention
 
-### Test 8: Confusion Matrix Analysis
-- Detailed prediction analysis
-- Precision, recall, specificity, F1-score
+The Week 4 notebook implements strict protocols to prevent data leakage:
 
-### Test 9: Feature Set Comparison
-- Tests different feature combinations
-- Identifies optimal feature set
+1. **Chronological Splitting**: Data split by timestamp (not random), ensuring temporal ordering
+2. **Rating-Based Targets**: Labels derived from star ratings (ground truth), not from text analysis
+3. **Fit-on-Train-Only**: All feature engineering (TF-IDF, scalers) fit on training data only
+4. **Time-Aware CV**: Uses TimeSeriesSplit to respect temporal ordering in cross-validation
+5. **Test Set Isolation**: Test set used ONLY once for final evaluation
 
-### Test 10: Comprehensive Summary Report
-- Complete overview of all test results
-- Recommendations and findings
+For detailed explanation, see `Week 4/LEAKAGE_FIXES_EXPLANATION.md`.
 
 ## 📈 Usage
 
+### Running the Main Pipeline (Week 4):
+
 1. Open the Jupyter notebook:
 ```bash
-jupyter notebook "Week 2/VSCodeExperiment.ipynb"
+jupyter notebook "Week 4/Sentiment_Analysis_Pipeline.ipynb"
 ```
 
 2. Run cells sequentially:
-   - Cells 0-11: Data loading and preprocessing
-   - Cell 12: Testing framework setup
-   - Cells 13-21: All test cells
-   - Cell 22: Summary report
+   - Sections A-E: Data loading, cleaning, target definition, and splitting
+   - Section F: Feature engineering
+   - Section G: Exploratory data analysis
+   - Section H: Baseline models
+   - Section I: All ML models (including BERT)
+   - Section J: Time-aware cross-validation
+   - Section K: Final test evaluation
+   - Sections L-M: Error analysis and conclusions
 
-## 📝 Key Findings
+### Running Previous Notebooks:
 
-(Add your key findings here after running the analysis)
+- **Week 2**: `Week 2/VSCodeExperiment.ipynb` - Initial comprehensive testing framework
+- **Week 3**: `Week 3/Organized Code w Comments.ipynb` - Organized code with detailed comments
+
+## 📝 Key Methodological Improvements
+
+### Target Definition:
+- **Ternary Classification**: 
+  - Negative: 1-2 stars (label = 0)
+  - Neutral: 3 stars (label = 1)
+  - Positive: 4-5 stars (label = 2)
+- **No Circular Logic**: Labels come from ratings (user-provided), not from analyzing the text
+
+### Splitting Strategy:
+- **Chronological**: Most recent 15% = test set (most realistic evaluation)
+- **No Temporal Overlap**: Ensures train < validation < test in time
+- **Time-Aware CV**: Cross-validation respects temporal ordering
+
+### Feature Engineering:
+- **Text Features**: TF-IDF (fit on train, transform val/test)
+- **Time Features**: Hour (circular encoding: sin/cos), weekend indicator
+- **Embeddings**: Word2Vec (trained on train only), BERT (pre-trained)
+
+### Evaluation:
+- **Multi-Class Metrics**: F1 (macro), ROC-AUC (one-vs-rest), Precision/Recall (macro)
+- **Time-Aware CV**: 3-fold TimeSeriesSplit for model stability assessment
+- **Single Test Use**: Test set evaluated only once at the end
 
 ## 🛠️ Technologies Used
 
+### Core Libraries:
 - **Python**: Data processing and analysis
 - **Pandas**: Data manipulation
 - **NumPy**: Numerical computations
-- **Scikit-learn**: Machine learning models
-- **VADER Sentiment**: Sentiment analysis
-- **TextBlob**: Alternative sentiment analysis
+- **Scikit-learn**: Machine learning models, pipelines, metrics
 - **Matplotlib/Seaborn**: Visualizations
-- **SciPy**: Statistical tests
 
-## 📊 Results
+### ML & NLP Libraries:
+- **Scikit-learn**: Logistic Regression, TF-IDF, StandardScaler, TimeSeriesSplit
+- **Gensim**: Word2Vec embeddings
+- **Transformers**: BERT/DistilBERT models (Hugging Face)
+- **PyTorch**: Backend for transformers
 
-(Add your results summary here)
+### Analysis Tools:
+- **SciPy**: Statistical tests (for EDA)
+- **Time-series Tools**: TimeSeriesSplit for temporal validation
+
+## 📊 Expected Results
+
+The pipeline produces:
+- Model comparison table (F1, ROC-AUC, Precision, Recall)
+- Best model selection based on validation performance
+- Final test set evaluation (unbiased performance estimate)
+- Confusion matrix for ternary classification
+- Error analysis showing misclassification patterns
+- Performance analysis by hour of day
+- Time-aware cross-validation scores
+
+## 🔍 Previous Notebooks
+
+### Week 2: Comprehensive Testing Framework
+- Initial testing framework with 10 different tests
+- Comparison of multiple ML models
+- Statistical analysis
+
+### Week 3: Organized Code
+- Well-commented code structure
+- Initial attempt at preventing data leakage
+- Business insights and recommendations
+
+### Week 4: Production Pipeline ⭐
+- **Recommended for final analysis**
+- Strict data leakage prevention
+- Chronological splitting
+- Rating-based targets
+- Complete model comparison
+- Production-ready code
 
 ## 🤝 Contributing
 
@@ -163,9 +247,19 @@ This project is for academic purposes.
 Abdullah Ahmad Adel Al-Taher
 - Course: GRAD699
 - Institution: Harrisburg University of Science and Technology
+- Project: Sentiment Analysis - Time-of-Day Effects on Review Sentiment
 
 ## 🙏 Acknowledgments
 
 - Amazon for providing review data
-- Open-source community for excellent libraries
+- Open-source community for excellent libraries (scikit-learn, Hugging Face, Gensim)
+- Hugging Face for pre-trained BERT models
 
+## 📚 References
+
+- Week 4 notebook: `Week 4/Sentiment_Analysis_Pipeline.ipynb`
+- Data leakage explanation: `Week 4/LEAKAGE_FIXES_EXPLANATION.md`
+
+---
+
+**Note**: The Week 4 notebook is the recommended starting point for understanding the complete pipeline with proper data leakage prevention protocols.
