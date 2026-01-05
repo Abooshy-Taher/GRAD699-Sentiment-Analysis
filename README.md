@@ -36,6 +36,10 @@ Sentiment Analysis/
 ├── Week 4/                              # ⭐ Main pipeline (production-ready)
 │   ├── Sentiment_Analysis_Pipeline.ipynb    # Complete ML pipeline with leakage fixes
 │   └── LEAKAGE_FIXES_EXPLANATION.md         # Detailed explanation of fixes
+├── week5/                                # 🚀 Unsloth LLM fine-tuning
+│   ├── week5_unsloth_sentiment.ipynb        # Unsloth fine-tuning notebook (Colab-ready)
+│   ├── week5_utils.py                       # Utility functions
+│   └── README.md                            # Week 5 documentation
 ├── LICENSE
 └── README.md
 ```
@@ -234,6 +238,14 @@ The pipeline produces:
 - Complete model comparison
 - Production-ready code
 
+### Week 5: Unsloth LLM Fine-tuning 🚀
+- **LLM fine-tuning with Unsloth**
+- Fine-tunes Llama-3.1-8B using LoRA + 4-bit quantization
+- Instruction-following format for sentiment classification
+- Same chronological split and leakage prevention as Week 4
+- Colab-ready notebook with GPU support
+- See [week5/README.md](week5/README.md) for details
+
 ## 🤝 Contributing
 
 This is an academic project. For questions or suggestions, please open an issue.
@@ -259,7 +271,11 @@ Abdullah Ahmad Adel Al-Taher
 
 - Week 4 notebook: `Week 4/Sentiment_Analysis_Pipeline.ipynb`
 - Data leakage explanation: `Week 4/LEAKAGE_FIXES_EXPLANATION.md`
+- Week 5 notebook: `week5/week5_unsloth_sentiment.ipynb`
+- Week 5 documentation: `week5/README.md`
 
 ---
 
-**Note**: The Week 4 notebook is the recommended starting point for understanding the complete pipeline with proper data leakage prevention protocols.
+**Note**: 
+- The Week 4 notebook is the recommended starting point for understanding the complete pipeline with proper data leakage prevention protocols.
+- Week 5 introduces LLM fine-tuning with Unsloth for advanced sentiment classification.
