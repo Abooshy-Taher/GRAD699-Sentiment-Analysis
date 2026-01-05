@@ -52,20 +52,19 @@ This week introduces **Unsloth-based LLM fine-tuning** for ternary sentiment cla
 
 1. **Open the notebook in Colab**:
    
-   **Note**: Replace `YOUR_USERNAME/YOUR_REPO` with your actual GitHub username and repository name.
+   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Abooshy-Taher/GRAD699-Sentiment-Analysis/blob/main/week5/week5_unsloth_sentiment.ipynb)
    
-   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/YOUR_USERNAME/YOUR_REPO/blob/main/week5/week5_unsloth_sentiment.ipynb)
-   
-   Or upload the notebook directly to Colab and run it there.
+   Or directly visit: https://colab.research.google.com/github/Abooshy-Taher/GRAD699-Sentiment-Analysis/blob/main/week5/week5_unsloth_sentiment.ipynb
 
 2. **Run all cells sequentially**:
    - Cell 1: Install dependencies (takes ~2-3 minutes)
-   - Cell 2: GPU check
-   - Cell 3: Imports and configuration
-   - Cell 4: Load and prepare data
-   - Cell 5-9: Prepare dataset and configure model
+   - Cell 2: Mount Google Drive (required for dataset access)
+   - Cell 3: GPU check
+   - Cell 4: Imports and configuration
+   - Cell 5: Load and prepare data
+   - Cell 6-9: Prepare dataset and configure model
    - Cell 10: Fine-tune model (takes 30-60 minutes)
-   - Cell 11-14: Save model, evaluate, and show results
+   - Cell 11-16: Save model, evaluate, and show results
 
 ### Expected GPU Requirements
 
@@ -134,7 +133,7 @@ The notebook computes:
 
 ## Reproducibility
 
-- ✅ Random seeds set (`RANDOM_STATE=42`)
+- ✅ Random seeds set (`RANDOM_STATE=319302`)
 - ✅ Chronological split (no shuffling)
 - ✅ Same label mapping as Week 4 (0=Negative, 1=Neutral, 2=Positive)
 
@@ -178,5 +177,5 @@ The notebook computes:
 
 ---
 
-**Note**: This notebook is designed to run end-to-end in Google Colab. For local execution, ensure you have a GPU and adjust paths accordingly.
+**Note**: This notebook is **100% Colab-ready** and designed to run end-to-end in Google Colab. It automatically mounts Google Drive and loads the dataset from `/content/drive/MyDrive/Amazon_Data.csv` or `/content/Amazon_Data.csv`. All utility functions are inlined - no local file dependencies required.
 
