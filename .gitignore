@@ -59,3 +59,6 @@ Thumbs.db
 *.tmp
 *.temp
 
+# Local artifacts
+pandoc-3.9-x86_64-macOS.pkg
+Week 7/sentiment analysis final week 7.html
